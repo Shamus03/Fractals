@@ -1,13 +1,16 @@
 package entity;
 
 import camera.Camera;
+import shape.Polygon2D;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public abstract class Fractal extends Entity {
     static int iterationLimit = 0;
-    static int iterationDelay = 1000;
+    static int iterationDelay = 10;
     static int iterationUpTimer = iterationDelay;
+    static boolean iterating = true;
 
     int iteration;
 
@@ -27,8 +30,17 @@ public abstract class Fractal extends Entity {
     }
 
     public void tick(int delta) {
-        if(!iterated && iteration < iterationLimit)
+        if(!iterated && iteration < iterationLimit) {
             iterate();
+        }
+        updateBoundingBox();
+        if(!Camera.isOnScreen(this))
+            removeFromList();
+    }
+
+    public void updateBoundingBox() {
+        Rectangle2D rect = new Rectangle2D.Float(xPos1, yPos1, xPos2 - xPos1, yPos2 - yPos1);
+        boundingBox = new Polygon2D(rect);
     }
 
     abstract void iterate();
@@ -42,11 +54,10 @@ public abstract class Fractal extends Entity {
         iterationUpTimer -= delta;
         if(iterationUpTimer <= 0) {
             iterationUpTimer += iterationDelay;
-            if(iterationLimit >= 0)
+            if(iterating)
                 iterationLimit++;
         }
 
-        if(delta > 100)
-            iterationLimit = -1;
+        iterating = delta < 5;
     }
 }

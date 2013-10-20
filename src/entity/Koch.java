@@ -21,7 +21,18 @@ public class Koch extends Fractal {
         float pointX = (float) (cX + length / 6 * Math.sqrt(2) * Math.cos(angle + Math.PI/2));
         float pointY = (float) (cY + length / 6 * Math.sqrt(2) * Math.sin(angle + Math.PI/2));
 
-        new Koch((float)(cX - length / 6 * Math.cos(angle)), (float)(cY - length / 6 * Math.sin(angle)), pointX, pointY, iteration + 1).addToList();
-        new Koch(pointX, pointY,(float)(cX + length / 6 * Math.cos(angle)), (float)(cY + length / 6 * Math.sin(angle)),  iteration + 1).addToList();
+        float leftX = (float)(cX - length / 6 * Math.cos(angle));
+        float leftY = (float)(cY - length / 6 * Math.sin(angle));
+
+        float rightX = (float)(cX + length / 6 * Math.cos(angle));
+        float rightY = (float)(cY + length / 6 * Math.sin(angle));
+
+        new Koch(leftX, leftY, pointX, pointY, iteration + 1).addToList();
+        new Koch(pointX, pointY, rightX, rightY, iteration + 1).addToList();
+
+        new Koch(xPos1, yPos1, leftX, leftY, iteration + 1).addToList();
+        new Koch(rightX, rightY, xPos2, yPos2, iteration + 1).addToList();
+
+        removeFromList();
     }
 }
