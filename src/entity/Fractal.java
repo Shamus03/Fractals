@@ -29,7 +29,7 @@ public abstract class Fractal extends Entity {
             this.iteration = parent.iteration + 1;
             this.originGroup = parent.originGroup;
         } else {
-            this.iteration = currentIteration;
+            this.iteration = 0;
             this.originGroup = originGroups;
             originGroups++;
         }

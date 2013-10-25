@@ -33,6 +33,8 @@ public class MainClass {
 
         newFractal();
 
+        Camera.scale = 1 / startScale;
+
         new Entity() {
             float moveSpeed = .5f;
             float scaleSpeed = .001f;
@@ -63,8 +65,6 @@ public class MainClass {
                 lastSUBTRACTState = Input.SUBTRACT;
 
                 if(Input.R && !lastRState) {
-                    Camera.reset();
-                    Fractal.resetIteration();
                     Entity.entities.clear();
                     this.addToList();
                     MainClass.newFractal();
@@ -128,7 +128,5 @@ public class MainClass {
                 System.exit(1);
                 break;
         }
-
-        Camera.scale = 1 / startScale;
     }
 }
