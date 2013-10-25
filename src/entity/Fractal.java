@@ -1,16 +1,20 @@
 package entity;
 
 import camera.Camera;
+import main.MainClass;
 import shape.Polygon2D;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public abstract class Fractal extends Entity {
-    static int iterationLimit = 0;
-    static int iterationDelay = 10;
-    static int iterationUpTimer = iterationDelay;
-    static boolean iterating = true;
+    static int currentIteration = 0;
+
+    static int originGroups = 0;
+
+    Fractal parent;
+
+    int originGroup;
 
     int iteration;
 
@@ -18,8 +22,17 @@ public abstract class Fractal extends Entity {
 
     boolean iterated;
 
-    public Fractal(float xPos1, float yPos1, float xPos2, float yPos2, int iteration) {
-        this.iteration = iteration;
+    public Fractal(float xPos1, float yPos1, float xPos2, float yPos2, Fractal parent) {
+        this.parent = parent;
+
+        if(parent != null) {
+            this.iteration = parent.iteration + 1;
+            this.originGroup = parent.originGroup;
+        } else {
+            this.iteration = currentIteration;
+            this.originGroup = originGroups;
+            originGroups++;
+        }
 
         this.xPos1 = xPos1;
         this.yPos1 = yPos1;
@@ -30,12 +43,28 @@ public abstract class Fractal extends Entity {
     }
 
     public void tick(int delta) {
-        if(!iterated && iteration < iterationLimit) {
+        if(!iterated && iteration < currentIteration) {
             iterate();
+            iterated = true;
+            removeFromList();
+        }
+        if(iteration > currentIteration) {
+            removeFromList();
+            if(parent != null) {
+                if(!Entity.entities.contains(parent)) {
+                    parent.addToList();
+                    parent.iterated = false;
+                }
+            }
         }
         updateBoundingBox();
-        if(!Camera.isOnScreen(this))
-            removeFromList();
+        if(!Camera.isOnScreen(this) && iteration != 0)
+            for(Entity e: Entity.entities)
+                if(e != this && e instanceof Fractal)
+                    if(((Fractal)e).originGroup == this.originGroup) {
+                        removeFromList();
+                        break;
+                    }
     }
 
     public void updateBoundingBox() {
@@ -50,14 +79,20 @@ public abstract class Fractal extends Entity {
         Camera.drawLine(xPos1, yPos1, xPos2, yPos2, g);
     }
 
-    public static void iterationTimer(int delta) {
-        iterationUpTimer -= delta;
-        if(iterationUpTimer <= 0) {
-            iterationUpTimer += iterationDelay;
-            if(iterating)
-                iterationLimit++;
-        }
+    public static int getCurrentIteration() {
+        return currentIteration;
+    }
 
-        iterating = delta < 5;
+    public static void nextIteration() {
+        currentIteration++;
+    }
+
+    public static void previousIteration() {
+        if(currentIteration > 0)
+            currentIteration--;
+    }
+
+    public static void resetIteration() {
+        currentIteration = 0;
     }
 }
