@@ -28,6 +28,12 @@ public class MainClass {
         System.out.print("Enter your selection: ");
         fractalType = new Scanner(System.in).nextInt();
 
+        System.out.println("\nUse the arrow keys to explore, and the +/-");
+        System.out.println("keys (next to backspace) to zoom in/out.");
+        System.out.println("Press the +/- keys on the numpad to increase the iteration of the fractal.");
+        System.out.println("Any lines that leave the screen are deleted to improve performance; press");
+        System.out.println("the R key to reset the current iteration (recalculate up to the current point).");
+
         game = new Game();
         frame = new GameFrame("Fractals", game);
 
