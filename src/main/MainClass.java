@@ -24,7 +24,9 @@ public class MainClass {
         System.out.println("2: Koch Snowflake");
         System.out.println("3: Dragon Curve");
         System.out.println("4: Squares");
-        System.out.println("5: Fern\n");
+        System.out.println("5: Fern");
+        System.out.println("6: Sierpinski Triangle");
+        System.out.println();
 
         System.out.print("Enter your selection: ");
         fractalType = new Scanner(System.in).nextInt();
@@ -132,6 +134,9 @@ public class MainClass {
                 break;
             case 5:
                 new Fern(0 * startScale, -300 * startScale,0 * startScale, 280 * startScale, null).addToList();
+                break;
+            case 6:
+                new Sierpinski(-300 * startScale, -250 * startScale, 300 * startScale, -250 * startScale, null).addToList();
                 break;
             default:
                 System.out.println("Invalid selection.  Press Enter to quit.");
