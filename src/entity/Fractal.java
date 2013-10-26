@@ -1,7 +1,6 @@
 package entity;
 
 import camera.Camera;
-import main.MainClass;
 import shape.Polygon2D;
 
 import java.awt.*;
@@ -51,10 +50,9 @@ public abstract class Fractal extends Entity {
         if(iteration > currentIteration) {
             removeFromList();
             if(parent != null) {
-                if(!Entity.entities.contains(parent)) {
+                parent.iterated = false;
+                if(!Entity.entities.contains(parent))
                     parent.addToList();
-                    parent.iterated = false;
-                }
             }
         }
         updateBoundingBox();
@@ -90,9 +88,5 @@ public abstract class Fractal extends Entity {
     public static void previousIteration() {
         if(currentIteration > 0)
             currentIteration--;
-    }
-
-    public static void resetIteration() {
-        currentIteration = 0;
     }
 }

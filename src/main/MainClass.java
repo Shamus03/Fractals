@@ -23,7 +23,8 @@ public class MainClass {
         System.out.println("1: Golden Beetle");
         System.out.println("2: Koch Snowflake");
         System.out.println("3: Dragon Curve");
-        System.out.println("4: Squares\n");
+        System.out.println("4: Squares");
+        System.out.println("5: Fern\n");
 
         System.out.print("Enter your selection: ");
         fractalType = new Scanner(System.in).nextInt();
@@ -35,6 +36,7 @@ public class MainClass {
         System.out.println("the R key to reset the current iteration (recalculate up to the current point).");
 
         game = new Game();
+        game.setCollisionEnabled(false);
         frame = new GameFrame("Fractals", game);
 
         newFractal();
@@ -80,7 +82,7 @@ public class MainClass {
 
             public void draw(Graphics2D g) {
                 g.setColor(Color.black);
-                g.drawString("Entities: " + Entity.entities.size(), 0, 12);
+                g.drawString("Lines: " + (Entity.entities.size() - 1), 0, 12);
                 g.drawString("Iteration: " + Fractal.getCurrentIteration(), 0, 24);
             }
         }.addToList();
@@ -127,6 +129,9 @@ public class MainClass {
                 new Squares(xPos + size/2, yPos - size/2, xPos - size/2, yPos - size/2, null).addToList();
                 new Squares(xPos - size/2, yPos - size/2, xPos - size/2, yPos + size/2, null).addToList();
                 new Squares(xPos - size/2, yPos + size/2, xPos + size/2, yPos + size/2, null).addToList();
+                break;
+            case 5:
+                new Fern(0 * startScale, -300 * startScale,0 * startScale, 280 * startScale, null).addToList();
                 break;
             default:
                 System.out.println("Invalid selection.  Press Enter to quit.");
